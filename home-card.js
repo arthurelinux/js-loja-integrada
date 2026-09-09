@@ -32,7 +32,8 @@
             search = q("#cabecalho .busca input"),
             form = search && search.closest("form"),
             top = q(".btns-barra-inicial"),
-            logoSrc = logo ? logo.src : "";
+            logoSrc = (logo && (logo.getAttribute("data-src") || logo.currentSrc || logo.getAttribute("src"))) ||
+                "https://cdn.awsli.com.br/2648/2648975/logo/sodre-logo-laboratorio-ddx7nhf7al.png";
         var acesso = href("acesso credenciado"),
             portal = href("portal empresa");
         if (top) { qa("a", top).forEach(function(a) { var t = txt(a).toLowerCase(); if (t.indexOf("acesso credenciado") > -1) acesso = a.href; if (t.indexOf("portal empresa") > -1) portal = a.href }) }
@@ -43,6 +44,16 @@
         var h = document.createElement("header");
         h.className = "s26m";
         h.innerHTML = '<div class="s26m-top"><div class="s26m-slogan"><strong># 1º DO BRASIL</strong><small>em toxicologia</small></div><div class="s26m-toplinks"><a href="' + acesso + '">ACESSO CREDENCIADO</a><a href="' + portal + '">PORTAL EMPRESA</a></div></div><div class="s26m-main"><button type="button" class="s26m-menu" aria-label="Abrir menu"><span></span><span></span><span></span></button><a class="s26m-logo" href="/">' + (logoSrc ? '<img src="' + logoSrc + '" alt="Sodré Laboratório">' : "SODRÉ") + '</a><div class="s26m-actions"><a class="s26m-action s26m-cart" href="' + (cart ? cart.href : "/carrinho/index") + '" aria-label="Carrinho">' + icon(cart, '<i class="icon-shopping-cart"></i>') + '</a><a class="s26m-action s26m-profile" href="' + (account ? account.href : "/conta/index") + '" aria-label="Minha conta">' + icon(account, '<i class="icon-user"></i>') + '</a></div></div><div class="s26m-searchrow"><form class="s26m-search" action="' + (form ? form.action : "/buscar") + '" method="get"><input type="text" name="' + (search && search.name ? search.name : "q") + '" placeholder="' + (search && search.placeholder ? search.placeholder : "Digite o que você procura") + '"><button type="submit" aria-label="Buscar"><i class="icon-search"></i></button></form></div>';
+        // O cabeçalho nativo pode receber o logo depois da primeira montagem.
+        var mobileLogo = q(".s26m-logo img", h);
+        if (mobileLogo) {
+            mobileLogo.loading = "eager";
+            mobileLogo.addEventListener("error", function() {
+                var fallback = "https://cdn.awsli.com.br/2648/2648975/logo/sodre-logo-laboratorio-ddx7nhf7al.png";
+                if (mobileLogo.src !== fallback) mobileLogo.src = fallback;
+                else q(".s26m-logo", h).textContent = "SODRÉ";
+            });
+        }
         var overlay = document.createElement("div");
         overlay.className = "s26m-overlay";
         var drawer = document.createElement("aside");
@@ -78,153 +89,184 @@
 /// cards
 
 /**
- * SODRÉ TOXICOLÓGICO
- * Cards da Home - Mobile
- *
- * Responsabilidade exclusiva:
- * - Ajustar os cards da home no mobile
- * - Não altera header, menu, footer ou outros componentes
+ * SODRE - HOME CARDS MOBILE
+ * Montagem dos cards + loader
  */
-
 (function() {
     'use strict';
 
-    const MOBILE_BREAKPOINT = 979;
-    const CARD_SELECTOR =
-        '.card-detran, .card-empresas, .card-concurso, .card-carreira';
+    const MOBILE = 979;
+    const SECTION = '.cards-sodre.s26-products';
+    const CARDS = '.card-detran,.card-empresas,.card-concurso,.card-carreira';
 
-    let initialized = false;
-    let observer = null;
-    let resizeTimer = null;
+    function css(el, props) {
+        if (!el) return;
 
-    /**
-     * Aplica uma propriedade inline com !important.
-     */
-    function style(element, properties) {
-        if (!element) return;
-
-        Object.keys(properties).forEach(function(property) {
-            element.style.setProperty(
-                property,
-                properties[property],
-                'important'
-            );
+        Object.keys(props).forEach(function(key) {
+            el.style.setProperty(key, props[key], 'important');
         });
     }
 
-    /**
-     * Remove somente os estilos inline criados por este script.
-     * Usado quando o usuário volta para o desktop.
-     */
-    function clearStyles(element, properties) {
-        if (!element) return;
+    /* =====================================================
+       LOADER
+    ===================================================== */
 
-        properties.forEach(function(property) {
-            element.style.removeProperty(property);
-        });
+    function createLoader() {
+
+        if (document.getElementById('s26-page-loader')) return;
+
+        const style = document.createElement('style');
+
+        style.id = 's26-loader-style';
+
+        style.textContent = `
+            #s26-page-loader{
+                position:fixed;
+                inset:0;
+                z-index:2147483647;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+                gap:18px;
+                background:#fff;
+                transition:opacity .35s ease,visibility .35s ease;
+            }
+
+            #s26-page-loader.s26-loaded{
+                opacity:0;
+                visibility:hidden;
+                pointer-events:none;
+            }
+
+            .s26-loader-logo{
+                font-family:Poppins,Arial,sans-serif;
+                font-size:18px;
+                font-weight:800;
+                color:#30208f;
+            }
+
+            .s26-loader-spinner{
+                width:42px;
+                height:42px;
+                border:4px solid #eee;
+                border-top-color:#e60046;
+                border-radius:50%;
+                animation:s26-spin .7s linear infinite;
+            }
+
+            @keyframes s26-spin{
+                to{transform:rotate(360deg)}
+            }
+        `;
+
+        document.head.appendChild(style);
+
+        const loader = document.createElement('div');
+
+        loader.id = 's26-page-loader';
+
+        loader.innerHTML = `
+            <div class="s26-loader-spinner"></div>
+            <div class="s26-loader-logo">Sodré Laboratório</div>
+        `;
+
+        if (document.body) {
+            document.body.appendChild(loader);
+        }
     }
 
-    /**
-     * Ajusta um único card.
-     */
+    function removeLoader() {
+
+        const loader = document.getElementById('s26-page-loader');
+
+        if (!loader) return;
+
+        loader.classList.add('s26-loaded');
+
+        setTimeout(function() {
+            loader.remove();
+        }, 450);
+    }
+
+
+    /* =====================================================
+       CARD
+    ===================================================== */
+
     function buildCard(card) {
 
-        if (!card) return;
-
-        /* ==============================
-           CARD
-        ============================== */
-
-        style(card, {
-            'position': 'relative',
-            'width': '310px',
-            'max-width': '310px',
+        css(card, {
+            position: 'relative',
+            width: '310px',
             'min-width': '310px',
-            'margin': '0 auto',
-            'padding': '0',
-            'border': '0',
-            'background': 'transparent',
+            'max-width': '310px',
+            margin: '0 auto',
+            padding: '0',
+            border: '0',
+            background: 'transparent',
             'box-shadow': 'none',
-            'overflow': 'visible',
-            'text-align': 'center',
-            'box-sizing': 'border-box'
+            overflow: 'visible',
+            'text-align': 'center'
         });
 
 
-        /* ==============================
-           FAIXA SUPERIOR
-        ============================== */
+        /* TÍTULO COLORIDO */
 
-        const pill = card.querySelector('.s26-product__pill');
-
-        style(pill, {
-            'position': 'relative',
+        css(card.querySelector('.s26-product__pill'), {
+            position: 'relative',
             'z-index': '2',
 
-            'width': '252px',
-            'height': '51px',
+            width: '252px',
+            height: '51px',
             'min-height': '51px',
 
-            'margin': '0 auto -26px',
-            'padding': '0',
+            margin: '0 auto -26px',
+            padding: '0',
 
-            'display': 'flex',
+            display: 'flex',
             'align-items': 'center',
             'justify-content': 'center',
 
             'border-radius': '999px',
 
-            'background': 'linear-gradient(100deg,#352198 0%,#95166d 52%,#ff003f 100%)',
+            background: 'linear-gradient(100deg,#352198,#95166d 52%,#ff003f)',
 
-            'color': '#ffffff',
+            color: '#fff',
 
-            'font-family': 'Lexend, Poppins, Arial, sans-serif',
+            'font-family': 'Lexend,Poppins,Arial,sans-serif',
             'font-size': '25px',
             'font-weight': '800',
-            'line-height': '1',
-
-            'white-space': 'nowrap'
+            'line-height': '1'
         });
 
 
-        /* ==============================
-           CORPO CINZA
-        ============================== */
+        /* FUNDO DO CARD */
 
-        const body = card.querySelector('.s26-product__body');
-
-        style(body, {
-            'position': 'relative',
-
-            'width': '100%',
+        css(card.querySelector('.s26-product__body'), {
+            width: '100%',
             'min-height': '288px',
 
-            'padding': '56px 28px 20px',
+            padding: '56px 28px 20px',
 
             'border-radius': '18px',
 
-            'background': '#f1f1f2',
+            background: '#f1f1f2',
 
             'box-sizing': 'border-box'
         });
 
 
-        /* ==============================
-           NOME DO EXAME
-        ============================== */
+        /* NOME */
 
-        const name = card.querySelector('.s26-product__name');
-
-        style(name, {
+        css(card.querySelector('.s26-product__name'), {
             'min-height': '48px',
 
-            'margin': '0 0 18px',
+            margin: '0 0 18px',
 
-            'padding': '0',
+            color: '#454550',
 
-            'color': '#454550',
-
-            'font-family': 'Poppins, Arial, sans-serif',
+            'font-family': 'Poppins,Arial,sans-serif',
             'font-size': '16px',
             'font-weight': '500',
             'line-height': '1.18',
@@ -233,121 +275,113 @@
         });
 
 
-        /* ==============================
+        /* =================================================
            PREÇO
-        ============================== */
+        ================================================= */
 
         const price = card.querySelector('.s26-product__price');
 
         if (price) {
+            // A Loja Integrada entrega o valor como texto solto no strong.
+            // Envolvê-lo permite posicionar e dimensionar o número no grid.
+            const strong = price.querySelector('strong');
+            if (strong && !strong.querySelector('.s26-product__amount')) {
+                const amount = document.createElement('span');
+                amount.className = 's26-product__amount';
+                Array.from(strong.childNodes).forEach(function(node) {
+                    if (node.nodeType === 1 && node.matches('small')) return;
+                    amount.appendChild(node);
+                });
+                strong.appendChild(amount);
+            }
 
-            style(price, {
-                'display': 'inline-grid',
+            css(price, {
+                display: 'inline-grid',
 
                 'grid-template-columns': 'auto auto',
-                'grid-template-rows': '16px 42px',
+                'grid-template-rows': '16px 43px',
+
+                'column-gap': '4px',
 
                 'align-items': 'end',
                 'justify-content': 'center',
 
-                'column-gap': '4px',
-                'row-gap': '0',
+                width: 'max-content',
 
-                'width': 'max-content',
+                margin: '0 auto',
 
-                'margin': '0 auto',
-
-                'padding': '0',
-
-                'color': '#cc123d'
+                color: '#cc123d'
             });
 
 
-            /* A partir de */
+            /* A PARTIR DE */
 
             const prefix =
                 price.querySelector('.s26-product__prefix') ||
                 price.querySelector(':scope > span');
 
-            style(prefix, {
+            css(prefix, {
                 'grid-column': '1',
                 'grid-row': '1',
 
                 'justify-self': 'end',
                 'align-self': 'end',
 
-                'margin': '0 -1px -3px 0',
+                margin: '0 -1px -3px 0',
 
-                'padding': '0',
+                color: '#50505a',
 
-                'color': '#50505a',
-
-                'font-family': 'Poppins, Arial, sans-serif',
+                'font-family': 'Poppins,Arial,sans-serif',
                 'font-size': '11px',
                 'font-weight': '800',
-                'line-height': '1',
-
-                'white-space': 'nowrap'
+                'line-height': '1'
             });
 
 
             /* STRONG */
 
-            const strong = price.querySelector('strong');
-
-            style(strong, {
-                'display': 'contents',
-                'color': '#cc123d',
-                'font-weight': '900'
+            css(price.querySelector('strong'), {
+                display: 'contents'
             });
 
 
             /* R$ */
 
-            const currency = price.querySelector('small');
-
-            style(currency, {
+            css(price.querySelector('small'), {
                 'grid-column': '1',
                 'grid-row': '2',
 
                 'justify-self': 'end',
                 'align-self': 'start',
 
-                'margin': '5px 0 0',
+                margin: '5px 0 0',
 
-                'padding': '0',
+                color: '#cc123d',
 
-                'color': '#cc123d',
-
-                'font-family': 'Montserrat, Poppins, Arial, sans-serif',
+                'font-family': 'Montserrat,Poppins,Arial,sans-serif',
                 'font-size': '21px',
                 'font-weight': '900',
-                'line-height': '1',
-
-                'white-space': 'nowrap'
+                'line-height': '1'
             });
 
 
-            /* 129,90 */
+            /* VALOR */
 
-            const amount =
-                price.querySelector('.s26-product__amount');
-
-            style(amount, {
+            css(price.querySelector('.s26-product__amount'), {
                 'grid-column': '2',
                 'grid-row': '1 / 3',
 
                 'align-self': 'end',
 
-                'display': 'block',
+                margin: '0',
 
-                'margin': '0',
-                'padding': '0',
+                color: '#cc123d',
 
-                'color': '#cc123d',
+                'font-family': 'Montserrat,Poppins,Arial,sans-serif',
 
-                'font-family': 'Montserrat, Poppins, Arial, sans-serif',
+                /* VALOR GRANDE COMO NO DESKTOP */
                 'font-size': '46px',
+
                 'font-weight': '900',
                 'line-height': '.88',
 
@@ -358,315 +392,342 @@
         }
 
 
-        /* ==============================
-           PARCELAMENTO
-        ============================== */
+        /* PARCELAMENTO */
 
-        const installment = card.querySelector(
-            '.s26-product__installment, .s26-product__installments'
+        const installments = card.querySelector(
+            '.s26-product__installment,.s26-product__installments'
         );
 
-        style(installment, {
-            'width': '206px',
-            'max-width': '100%',
-            'min-height': '34px',
+        css(installments, {
+            width: '206px',
 
-            'margin': '7px auto 27px',
+            margin: '8px auto 27px',
 
-            'padding': '0',
+            color: '#62616a',
 
-            'color': '#62616a',
-
-            'font-family': 'Poppins, Arial, sans-serif',
+            'font-family': 'Poppins,Arial,sans-serif',
             'font-size': '13px',
-            'font-weight': '400',
             'line-height': '1.12',
 
             'text-align': 'right'
         });
 
-        if (installment) {
-            installment
-                .querySelectorAll('strong, b')
-                .forEach(function(element) {
-                    style(element, {
-                        'font-weight': '800',
-                        'color': '#4d4b54'
-                    });
-                });
-        }
 
+        /* BOTÕES */
 
-        /* ==============================
-           AÇÕES
-        ============================== */
-
-        const actions = card.querySelector('.s26-product__actions');
-
-        style(actions, {
-            'display': 'flex',
+        css(card.querySelector('.s26-product__actions'), {
+            display: 'flex',
             'align-items': 'center',
             'justify-content': 'center',
-
-            'width': '100%',
-
-            'margin': '0',
-            'padding': '0',
-
-            'gap': '0'
+            gap: '0'
         });
 
+        css(card.querySelector('.s26-product__buy'), {
+            display: 'inline-flex',
 
-        /* ==============================
-           BOTÃO COMPRE AGORA
-        ============================== */
-
-        const buy = card.querySelector('.s26-product__buy');
-
-        style(buy, {
-            'display': 'inline-flex',
             'align-items': 'center',
             'justify-content': 'center',
 
-            'width': '160px',
-            'height': '40px',
-            'min-height': '40px',
+            width: '160px',
+            height: '40px',
 
-            'margin': '0',
-            'padding': '0 16px',
+            padding: '0 16px',
 
-            'box-sizing': 'border-box',
-
-            'border': '0',
             'border-radius': '999px',
 
-            'background': '#30208f',
+            background: '#30208f',
 
-            'color': '#ffffff',
+            color: '#fff',
 
-            'font-family': 'Lexend, Poppins, Arial, sans-serif',
+            'font-family': 'Lexend,Poppins,Arial,sans-serif',
             'font-size': '14px',
             'font-weight': '800',
-            'line-height': '1',
 
-            'text-decoration': 'none',
-
-            'white-space': 'nowrap'
+            'text-decoration': 'none'
         });
 
 
-        /* ==============================
-           REMOVE "SAIBA MAIS"
-        ============================== */
+        /* SAIBA MAIS */
 
-        card
-            .querySelectorAll('.s26-product__more')
-            .forEach(function(element) {
-                style(element, {
-                    'display': 'none'
-                });
+        card.querySelectorAll('.s26-product__more').forEach(function(el) {
+            css(el, {
+                display: 'none'
             });
+        });
 
 
-        /* ==============================
-           TEXTO ABAIXO DO CARD
-        ============================== */
+        /* OBSERVAÇÃO */
 
-        const note = card.querySelector('.s26-product__note');
+        css(card.querySelector('.s26-product__note'), {
+            margin: '9px 0 0',
 
-        style(note, {
-            'margin': '9px 0 0',
+            color: '#77747e',
 
-            'padding': '0',
-
-            'color': '#77747e',
-
-            'font-family': 'Poppins, Arial, sans-serif',
+            'font-family': 'Poppins,Arial,sans-serif',
             'font-size': '13px',
-            'font-weight': '400',
-            'line-height': '1.1',
 
             'text-align': 'center'
         });
 
-
-        card.dataset.s26MobileReady = '1';
+        card.dataset.s26Ready = '1';
     }
 
 
-    /**
-     * Monta todos os cards.
-     */
-    function buildCards() {
+    /* =====================================================
+       MONTA A SEÇÃO
+    ===================================================== */
 
-        if (window.innerWidth > MOBILE_BREAKPOINT) {
-            return;
+    function build() {
+
+        /*
+         * Desktop não é alterado.
+         */
+
+        if (window.innerWidth > MOBILE) {
+            return false;
         }
 
-        const sections =
-            document.querySelectorAll('.cards-sodre.s26-products');
+        const sections = document.querySelectorAll(SECTION);
 
         if (!sections.length) {
-            return;
+            return false;
         }
+
+        let cardsFound = 0;
 
         sections.forEach(function(section) {
 
-            /*
-             * Primeiro escondemos.
-             * Isso evita mostrar o card antigo durante a montagem.
-             */
-
-            style(section, {
-                'visibility': 'hidden',
-                'opacity': '0'
+            css(section, {
+                visibility: 'hidden',
+                opacity: '0'
             });
 
-
-            /* Container principal */
-
-            style(section, {
-                'width': '100%',
+            css(section, {
+                width: '100%',
                 'max-width': '390px',
 
-                'margin': '34px auto',
+                margin: '34px auto',
 
-                'padding': '0 16px',
+                padding: '0 16px',
 
-                'box-sizing': 'border-box',
-
-                'overflow': 'visible'
+                'box-sizing': 'border-box'
             });
 
-
-            /* Grid */
 
             const container =
                 section.querySelector('.container-cards');
 
-            style(container, {
-                'display': 'grid',
+            css(container, {
+                display: 'grid',
 
                 'grid-template-columns': '310px',
 
                 'justify-content': 'center',
 
-                'gap': '34px',
+                gap: '34px',
 
-                'width': '100%',
+                width: '100%',
 
-                'margin': '0',
+                margin: '0',
 
-                'padding': '0'
+                padding: '0'
             });
 
 
-            /* Cards */
+            const cards = section.querySelectorAll(CARDS);
 
-            section
-                .querySelectorAll(CARD_SELECTOR)
-                .forEach(buildCard);
+            cardsFound += cards.length;
+
+            cards.forEach(function(card) {
+                buildCard(card);
+            });
 
 
             /*
-             * Somente depois de tudo pronto,
-             * mostramos a seção.
+             * Só mostra depois de montado.
              */
 
-            style(section, {
-                'visibility': 'visible',
-                'opacity': '1'
+            css(section, {
+                visibility: 'visible',
+                opacity: '1'
             });
         });
 
-        initialized = true;
+        return cardsFound > 0;
     }
 
 
-    /**
-     * Aguarda a Loja Integrada criar os cards.
-     */
-    function waitForCards() {
+    /* =====================================================
+       ESPERA OS CARDS EXISTIREM
+    ===================================================== */
 
-        if (window.innerWidth > MOBILE_BREAKPOINT) {
-            return;
-        }
+    function waitCards() {
 
-        const cards =
-            document.querySelector('.cards-sodre.s26-products');
+        let attempts = 0;
 
-        if (cards) {
-            buildCards();
-            return;
-        }
+        const timer = setInterval(function() {
 
-        observer = new MutationObserver(function() {
+            attempts++;
 
-            const cards =
-                document.querySelector('.cards-sodre.s26-products');
+            if (build()) {
 
-            if (!cards) return;
+                clearInterval(timer);
 
-            buildCards();
+                /*
+                 * Algumas rotinas da Loja Integrada
+                 * modificam o DOM depois.
+                 */
 
-            observer.disconnect();
-            observer = null;
-        });
+                setTimeout(build, 150);
+                setTimeout(build, 500);
+                setTimeout(build, 1000);
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+                finish();
+
+                return;
+            }
+
+            /*
+             * Máximo de 10 segundos.
+             */
+
+            if (attempts >= 100) {
+
+                clearInterval(timer);
+
+                finish();
+            }
+
+        }, 100);
     }
 
 
-    /**
-     * Inicialização.
-     */
-    function init() {
+    /* =====================================================
+       FINALIZA CARREGAMENTO
+    ===================================================== */
 
-        if (window.innerWidth > MOBILE_BREAKPOINT) {
+    let cardsReady = false;
+    let pageReady = document.readyState === 'complete';
+
+    function finish() {
+
+        cardsReady = true;
+
+        checkReady();
+    }
+
+    function checkReady() {
+
+        if (!cardsReady || !pageReady) {
             return;
         }
-
-        waitForCards();
 
         /*
-         * Segunda passagem.
-         * Serve para conteúdo que a Loja Integrada
-         * altera alguns milissegundos depois.
+         * Pequeno intervalo para o browser
+         * terminar o primeiro paint.
          */
 
-        setTimeout(buildCards, 100);
-        setTimeout(buildCards, 500);
-        setTimeout(buildCards, 1200);
+        requestAnimationFrame(function() {
+
+            requestAnimationFrame(function() {
+
+                setTimeout(removeLoader, 100);
+
+            });
+
+        });
     }
 
 
-    /**
-     * DOM pronto.
+    /* =====================================================
+       INICIALIZAÇÃO
+    ===================================================== */
+
+    function start() {
+
+        createLoader();
+
+        /*
+         * Desktop:
+         * não precisamos remontar os cards.
+         */
+
+        if (window.innerWidth > MOBILE) {
+
+            cardsReady = true;
+
+            checkReady();
+
+            return;
+        }
+
+        waitCards();
+    }
+
+
+    /*
+     * DOM READY
      */
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            start, { once: true }
+        );
+
     } else {
-        init();
+
+        start();
+
     }
 
 
-    /**
-     * Resize / mudança de orientação.
+    /*
+     * WINDOW LOAD
+     *
+     * Aqui imagens, CSS, fontes e demais
+     * recursos já terminaram de carregar.
      */
+
+    if (document.readyState === 'complete') {
+
+        pageReady = true;
+
+    } else {
+
+        window.addEventListener(
+            'load',
+            function() {
+
+                pageReady = true;
+
+                checkReady();
+
+            }, { once: true }
+        );
+
+    }
+
+
+    /* =====================================================
+       RESIZE
+    ===================================================== */
+
+    let resizeTimer;
+
     window.addEventListener('resize', function() {
 
         clearTimeout(resizeTimer);
 
         resizeTimer = setTimeout(function() {
 
-            if (window.innerWidth <= MOBILE_BREAKPOINT) {
-                buildCards();
+            if (window.innerWidth <= MOBILE) {
+                build();
             }
 
         }, 150);
+
     });
 
 })();
