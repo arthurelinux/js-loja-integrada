@@ -86,206 +86,57 @@
 })();
 
 
-/// cards
-
-/**
- * SODRE - HOME CARDS MOBILE
- * Montagem dos cards + loader
- */
+/* Cards e loader: importar sodre-mobile.css depois do CSS da loja. */
 (function() {
     'use strict';
+    if (window.__s26CardsV4) return;
+    window.__s26CardsV4 = true;
 
-    const MOBILE = 979;
-    const SECTION = '.cards-sodre.s26-products';
-    const CARDS = '.card-detran,.card-empresas,.card-concurso,.card-carreira';
+    const mobile = window.matchMedia('(max-width:979px)');
+    const sectionSelector = '.cards-sodre.s26-products';
+    const cardSelector = '.card-detran,.card-empresas,.card-concurso,.card-carreira';
+    const managed = '.container-cards,' + cardSelector + ',[class^="s26-product__"],.s26-product__price strong,.s26-product__price small,.s26-product__price > span';
+    const originals = new Map();
+    let observer, frame, readyTimer, finished = false;
+    let lastChange = performance.now();
+    let fontsReady = !document.fonts;
+    if (document.fonts) document.fonts.ready.then(function() { fontsReady = true; });
 
-    function css(el, props) {
-        if (!el) return;
-
-        Object.keys(props).forEach(function(key) {
-            el.style.setProperty(key, props[key], 'important');
-        });
+    // CSS externo controla o layout; estilos inline antigos venceriam até !important.
+    function clearLegacyStyle(el) {
+        if (!el.hasAttribute('style')) return;
+        originals.set(el, el.getAttribute('style'));
+        el.removeAttribute('style');
     }
 
-    /* =====================================================
-       LOADER
-    ===================================================== */
-
-    function createLoader() {
-
-        if (document.getElementById('s26-page-loader')) return;
-
-        const style = document.createElement('style');
-
-        style.id = 's26-loader-style';
-
-        style.textContent = `
-            #s26-page-loader{
-                position:fixed;
-                inset:0;
-                z-index:2147483647;
-                display:flex;
-                flex-direction:column;
-                align-items:center;
-                justify-content:center;
-                gap:18px;
-                background:#fff;
-                transition:opacity .35s ease,visibility .35s ease;
+    function refresh() {
+        frame = null;
+        observer.disconnect();
+        document.querySelectorAll(sectionSelector).forEach(function(section) {
+            section.classList.toggle('s26-mobile-products', mobile.matches);
+            if (!mobile.matches) return;
+            clearLegacyStyle(section);
+            section.querySelectorAll(managed).forEach(clearLegacyStyle);
+            // Reutiliza as setas existentes; cria controles se a loja ainda não os montou.
+            const track = section.querySelector('.container-cards');
+            if (track && !section.querySelector('.s26-product-arrow')) {
+                section.setAttribute('data-s26m', '1');
+                [-1, 1].forEach(function(direction) {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 's26-card-nav s26-product-arrow s26-product-arrow--' + (direction < 0 ? 'prev' : 'next');
+                    button.setAttribute('aria-label', direction < 0 ? 'Exame anterior' : 'Próximo exame');
+                    button.textContent = direction < 0 ? '‹' : '›';
+                    button.addEventListener('click', function() {
+                        if (track.children.length < 2) return;
+                        if (direction < 0) track.prepend(track.lastElementChild);
+                        else track.append(track.firstElementChild);
+                    });
+                    section.appendChild(button);
+                });
             }
-
-            #s26-page-loader.s26-loaded{
-                opacity:0;
-                visibility:hidden;
-                pointer-events:none;
-            }
-
-            .s26-loader-logo{
-                font-family:Poppins,Arial,sans-serif;
-                font-size:18px;
-                font-weight:800;
-                color:#30208f;
-            }
-
-            .s26-loader-spinner{
-                width:42px;
-                height:42px;
-                border:4px solid #eee;
-                border-top-color:#e60046;
-                border-radius:50%;
-                animation:s26-spin .7s linear infinite;
-            }
-
-            @keyframes s26-spin{
-                to{transform:rotate(360deg)}
-            }
-        `;
-
-        document.head.appendChild(style);
-
-        const loader = document.createElement('div');
-
-        loader.id = 's26-page-loader';
-
-        loader.innerHTML = `
-            <div class="s26-loader-spinner"></div>
-            <div class="s26-loader-logo">Sodré Laboratório</div>
-        `;
-
-        if (document.body) {
-            document.body.appendChild(loader);
-        }
-    }
-
-    function removeLoader() {
-
-        const loader = document.getElementById('s26-page-loader');
-
-        if (!loader) return;
-
-        loader.classList.add('s26-loaded');
-
-        setTimeout(function() {
-            loader.remove();
-        }, 450);
-    }
-
-
-    /* =====================================================
-       CARD
-    ===================================================== */
-
-    function buildCard(card) {
-
-        css(card, {
-            position: 'relative',
-            width: '310px',
-            'min-width': '310px',
-            'max-width': '310px',
-            margin: '0 auto',
-            padding: '0',
-            border: '0',
-            background: 'transparent',
-            'box-shadow': 'none',
-            overflow: 'visible',
-            'text-align': 'center'
-        });
-
-
-        /* TÍTULO COLORIDO */
-
-        css(card.querySelector('.s26-product__pill'), {
-            position: 'relative',
-            'z-index': '2',
-
-            width: '252px',
-            height: '51px',
-            'min-height': '51px',
-
-            margin: '0 auto -26px',
-            padding: '0',
-
-            display: 'flex',
-            'align-items': 'center',
-            'justify-content': 'center',
-
-            'border-radius': '999px',
-
-            background: 'linear-gradient(100deg,#352198,#95166d 52%,#ff003f)',
-
-            color: '#fff',
-
-            'font-family': 'Lexend,Poppins,Arial,sans-serif',
-            'font-size': '25px',
-            'font-weight': '800',
-            'line-height': '1'
-        });
-
-
-        /* FUNDO DO CARD */
-
-        css(card.querySelector('.s26-product__body'), {
-            width: '100%',
-            'min-height': '288px',
-
-            padding: '56px 28px 20px',
-
-            'border-radius': '18px',
-
-            background: '#f1f1f2',
-
-            'box-sizing': 'border-box'
-        });
-
-
-        /* NOME */
-
-        css(card.querySelector('.s26-product__name'), {
-            'min-height': '48px',
-
-            margin: '0 0 18px',
-
-            color: '#454550',
-
-            'font-family': 'Poppins,Arial,sans-serif',
-            'font-size': '16px',
-            'font-weight': '500',
-            'line-height': '1.18',
-
-            'text-align': 'center'
-        });
-
-
-        /* =================================================
-           PREÇO
-        ================================================= */
-
-        const price = card.querySelector('.s26-product__price');
-
-        if (price) {
-            // A Loja Integrada entrega o valor como texto solto no strong.
-            // Envolvê-lo permite posicionar e dimensionar o número no grid.
-            const strong = price.querySelector('strong');
-            if (strong && !strong.querySelector('.s26-product__amount')) {
+            section.querySelectorAll('.s26-product__price strong').forEach(function(strong) {
+                if (strong.querySelector('.s26-product__amount')) return;
                 const amount = document.createElement('span');
                 amount.className = 's26-product__amount';
                 Array.from(strong.childNodes).forEach(function(node) {
@@ -293,441 +144,71 @@
                     amount.appendChild(node);
                 });
                 strong.appendChild(amount);
-            }
-
-            css(price, {
-                display: 'inline-grid',
-
-                'grid-template-columns': 'auto auto',
-                'grid-template-rows': '16px 43px',
-
-                'column-gap': '4px',
-
-                'align-items': 'end',
-                'justify-content': 'center',
-
-                width: 'max-content',
-
-                margin: '0 auto',
-
-                color: '#cc123d'
             });
-
-
-            /* A PARTIR DE */
-
-            const prefix =
-                price.querySelector('.s26-product__prefix') ||
-                price.querySelector(':scope > span');
-
-            css(prefix, {
-                'grid-column': '1',
-                'grid-row': '1',
-
-                'justify-self': 'end',
-                'align-self': 'end',
-
-                margin: '0 -1px -3px 0',
-
-                color: '#50505a',
-
-                'font-family': 'Poppins,Arial,sans-serif',
-                'font-size': '11px',
-                'font-weight': '800',
-                'line-height': '1'
-            });
-
-
-            /* STRONG */
-
-            css(price.querySelector('strong'), {
-                display: 'contents'
-            });
-
-
-            /* R$ */
-
-            css(price.querySelector('small'), {
-                'grid-column': '1',
-                'grid-row': '2',
-
-                'justify-self': 'end',
-                'align-self': 'start',
-
-                margin: '5px 0 0',
-
-                color: '#cc123d',
-
-                'font-family': 'Montserrat,Poppins,Arial,sans-serif',
-                'font-size': '21px',
-                'font-weight': '900',
-                'line-height': '1'
-            });
-
-
-            /* VALOR */
-
-            css(price.querySelector('.s26-product__amount'), {
-                'grid-column': '2',
-                'grid-row': '1 / 3',
-
-                'align-self': 'end',
-
-                margin: '0',
-
-                color: '#cc123d',
-
-                'font-family': 'Montserrat,Poppins,Arial,sans-serif',
-
-                /* VALOR GRANDE COMO NO DESKTOP */
-                'font-size': '46px',
-
-                'font-weight': '900',
-                'line-height': '.88',
-
-                'letter-spacing': '-1px',
-
-                'white-space': 'nowrap'
-            });
+        });
+        if (!mobile.matches) {
+            originals.forEach(function(value, el) { if (el.isConnected) el.setAttribute('style', value); });
+            originals.clear();
         }
-
-
-        /* PARCELAMENTO */
-
-        const installments = card.querySelector(
-            '.s26-product__installment,.s26-product__installments'
-        );
-
-        css(installments, {
-            width: '206px',
-
-            margin: '8px auto 27px',
-
-            color: '#62616a',
-
-            'font-family': 'Poppins,Arial,sans-serif',
-            'font-size': '13px',
-            'line-height': '1.12',
-
-            'text-align': 'right'
-        });
-
-
-        /* BOTÕES */
-
-        css(card.querySelector('.s26-product__actions'), {
-            display: 'flex',
-            'align-items': 'center',
-            'justify-content': 'center',
-            gap: '0'
-        });
-
-        css(card.querySelector('.s26-product__buy'), {
-            display: 'inline-flex',
-
-            'align-items': 'center',
-            'justify-content': 'center',
-
-            width: '160px',
-            height: '40px',
-
-            padding: '0 16px',
-
-            'border-radius': '999px',
-
-            background: '#30208f',
-
-            color: '#fff',
-
-            'font-family': 'Lexend,Poppins,Arial,sans-serif',
-            'font-size': '14px',
-            'font-weight': '800',
-
-            'text-decoration': 'none'
-        });
-
-
-        /* SAIBA MAIS */
-
-        card.querySelectorAll('.s26-product__more').forEach(function(el) {
-            css(el, {
-                display: 'none'
-            });
-        });
-
-
-        /* OBSERVAÇÃO */
-
-        css(card.querySelector('.s26-product__note'), {
-            margin: '9px 0 0',
-
-            color: '#77747e',
-
-            'font-family': 'Poppins,Arial,sans-serif',
-            'font-size': '13px',
-
-            'text-align': 'center'
-        });
-
-        card.dataset.s26Ready = '1';
+        observer.observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:['style', 'class', 'src']});
     }
-
-
-    /* =====================================================
-       MONTA A SEÇÃO
-    ===================================================== */
-
-    function build() {
-
-        /*
-         * Desktop não é alterado.
-         */
-
-        if (window.innerWidth > MOBILE) {
-            return false;
-        }
-
-        const sections = document.querySelectorAll(SECTION);
-
-        if (!sections.length) {
-            return false;
-        }
-
-        let cardsFound = 0;
-
-        sections.forEach(function(section) {
-
-            css(section, {
-                visibility: 'hidden',
-                opacity: '0'
-            });
-
-            css(section, {
-                width: '100%',
-                'max-width': '390px',
-
-                margin: '34px auto',
-
-                padding: '0 16px',
-
-                'box-sizing': 'border-box'
-            });
-
-
-            const container =
-                section.querySelector('.container-cards');
-
-            css(container, {
-                display: 'grid',
-
-                'grid-template-columns': '310px',
-
-                'justify-content': 'center',
-
-                gap: '34px',
-
-                width: '100%',
-
-                margin: '0',
-
-                padding: '0'
-            });
-
-
-            const cards = section.querySelectorAll(CARDS);
-
-            cardsFound += cards.length;
-
-            cards.forEach(function(card) {
-                buildCard(card);
-            });
-
-
-            /*
-             * Só mostra depois de montado.
-             */
-
-            css(section, {
-                visibility: 'visible',
-                opacity: '1'
-            });
-        });
-
-        return cardsFound > 0;
-    }
-
-
-    /* =====================================================
-       ESPERA OS CARDS EXISTIREM
-    ===================================================== */
-
-    function waitCards() {
-
-        let attempts = 0;
-
-        const timer = setInterval(function() {
-
-            attempts++;
-
-            if (build()) {
-
-                clearInterval(timer);
-
-                /*
-                 * Algumas rotinas da Loja Integrada
-                 * modificam o DOM depois.
-                 */
-
-                setTimeout(build, 150);
-                setTimeout(build, 500);
-                setTimeout(build, 1000);
-
-                finish();
-
-                return;
-            }
-
-            /*
-             * Máximo de 10 segundos.
-             */
-
-            if (attempts >= 100) {
-
-                clearInterval(timer);
-
-                finish();
-            }
-
-        }, 100);
-    }
-
-
-    /* =====================================================
-       FINALIZA CARREGAMENTO
-    ===================================================== */
-
-    let cardsReady = false;
-    let pageReady = document.readyState === 'complete';
 
     function finish() {
-
-        cardsReady = true;
-
-        checkReady();
+        if (finished) return;
+        finished = true;
+        clearInterval(readyTimer);
+        document.documentElement.classList.remove('s26-page-loading');
+        const loader = document.getElementById('s26-page-loader');
+        if (loader) {
+            loader.classList.add('s26-loaded');
+            setTimeout(function() { loader.remove(); }, 400);
+        }
     }
 
     function checkReady() {
-
-        if (!cardsReady || !pageReady) {
-            return;
+        if (document.readyState !== 'complete' || !fontsReady) return;
+        const logo = document.querySelector('.s26m-logo img');
+        if (logo && !logo.complete) return;
+        // Na home esperamos também o HTML que as rotinas da loja montam depois.
+        if (mobile.matches && document.body.classList.contains('pagina-inicial')) {
+            const section = document.querySelector(sectionSelector);
+            if (!section || !section.querySelector(cardSelector)) return;
+            if (Array.from(section.querySelectorAll('.s26-product__price strong')).some(function(el) {
+                return !el.querySelector('.s26-product__amount');
+            })) return;
         }
-
-        /*
-         * Pequeno intervalo para o browser
-         * terminar o primeiro paint.
-         */
-
-        requestAnimationFrame(function() {
-
-            requestAnimationFrame(function() {
-
-                setTimeout(removeLoader, 100);
-
-            });
-
-        });
+        if (performance.now() - lastChange < 250) return;
+        requestAnimationFrame(function() { requestAnimationFrame(finish); });
     }
-
-
-    /* =====================================================
-       INICIALIZAÇÃO
-    ===================================================== */
 
     function start() {
-
-        createLoader();
-
-        /*
-         * Desktop:
-         * não precisamos remontar os cards.
-         */
-
-        if (window.innerWidth > MOBILE) {
-
-            cardsReady = true;
-
-            checkReady();
-
-            return;
-        }
-
-        waitCards();
-    }
-
-
-    /*
-     * DOM READY
-     */
-
-    if (document.readyState === 'loading') {
-
-        document.addEventListener(
-            'DOMContentLoaded',
-            start, { once: true }
-        );
-
-    } else {
-
-        start();
-
-    }
-
-
-    /*
-     * WINDOW LOAD
-     *
-     * Aqui imagens, CSS, fontes e demais
-     * recursos já terminaram de carregar.
-     */
-
-    if (document.readyState === 'complete') {
-
-        pageReady = true;
-
-    } else {
-
-        window.addEventListener(
-            'load',
-            function() {
-
-                pageReady = true;
-
-                checkReady();
-
-            }, { once: true }
-        );
-
-    }
-
-
-    /* =====================================================
-       RESIZE
-    ===================================================== */
-
-    let resizeTimer;
-
-    window.addEventListener('resize', function() {
-
-        clearTimeout(resizeTimer);
-
-        resizeTimer = setTimeout(function() {
-
-            if (window.innerWidth <= MOBILE) {
-                build();
+        const loader = document.createElement('div');
+        loader.id = 's26-page-loader';
+        loader.setAttribute('role', 'status');
+        loader.setAttribute('aria-live', 'polite');
+        loader.innerHTML = '<div class="s26-loader-spinner" aria-hidden="true"></div><span>Carregando Sodré Laboratório…</span>';
+        // Aparência mínima disponível mesmo antes do CSS externo chegar.
+        loader.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:white;color:#30208f;font:600 14px Arial,sans-serif';
+        document.body.appendChild(loader);
+        document.documentElement.classList.add('s26-page-loading');
+        observer = new MutationObserver(function(records) {
+            const relevant = records.some(function(record) {
+                const el = record.target.nodeType === 1 ? record.target : record.target.parentElement;
+                return el && (el.closest(sectionSelector) || (record.type === 'childList' && Array.from(record.addedNodes).some(function(node) {
+                    return node.nodeType === 1 && (node.matches(sectionSelector) || node.querySelector(sectionSelector));
+                })));
+            });
+            if (relevant) {
+                lastChange = performance.now();
+                if (!frame) frame = requestAnimationFrame(refresh);
             }
-
-        }, 150);
-
-    });
-
+        });
+        refresh();
+        mobile.addEventListener('change', refresh);
+        readyTimer = setInterval(checkReady, 100);
+        setTimeout(finish, 10000); // Recursos externos com falha nunca bloqueiam a loja.
+        window.addEventListener('pageshow', function(event) { if (event.persisted) finish(); });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
+    else start();
 })();
