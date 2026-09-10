@@ -207,3 +207,106 @@ html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos span {
         max-width: 100% !important;
     }
 }
+
+/* ==========================================================
+   FOOTER — apresentação dos itens
+   Não altera cores de fundo.
+   ========================================================== */
+html body.s26-layout-2026 #rodape.s26-footer .institucional > .conteiner {
+    width: min(1112px, calc(100% - 32px)) !important;
+    max-width: 1112px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .s26-footer__nav {
+    display: grid !important;
+    grid-template-columns: 1fr 1.25fr 1.25fr 1fr !important;
+    align-items: start !important;
+    gap: 28px !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .s26-footer__social {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .s26-footer__social .s26-social,
+html body.s26-layout-2026 #rodape.s26-footer .s26-footer__social .s26-social--in {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    box-sizing: border-box !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .s26-social--in {
+    font-size: 0 !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .s26-social--in::after {
+    content: "in" !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    height: 30px !important;
+    font: 900 16px/1 Arial, sans-serif !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .s26-footer__certs,
+html body.s26-layout-2026 #rodape.s26-footer .s26-footer__payments {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+}
+
+@media (max-width: 979px) {
+    html body.s26-layout-2026 #rodape.s26-footer .institucional > .conteiner {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__nav {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 28px 18px !important;
+    }
+
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__social,
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__contact,
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__certs,
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__payments,
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__brand {
+        grid-column: 1 / -1 !important;
+    }
+
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__certs,
+    html body.s26-layout-2026 #rodape.s26-footer .s26-footer__payments {
+        justify-content: center !important;
+    }
+}
