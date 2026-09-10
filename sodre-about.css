@@ -53,6 +53,7 @@ html body.s26-layout-2026 .s26-about__grid {
 html body.s26-layout-2026 .s26-about__grid span {
     display: flex !important;
     align-items: center !important;
+    position: relative !important;
     min-width: 0 !important;
     min-height: 64px !important;
     padding: 12px 0 12px 32px !important;
@@ -65,11 +66,14 @@ html body.s26-layout-2026 .s26-about__grid span {
 html body.s26-layout-2026 .s26-about__grid span::before {
     content: "✓" !important;
     position: absolute !important;
+    left: 0 !important;
+    top: 50% !important;
     display: grid !important;
     place-items: center !important;
     width: 23px !important;
     height: 23px !important;
-    margin-left: -32px !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
     border-radius: 50% !important;
     background: #ff0048 !important;
     color: #fff !important;
@@ -153,6 +157,43 @@ html body.s26-layout-2026 .s26-about__image {
     html body.s26-layout-2026 .s26-about__grid span::before {
         width: 23px !important;
         height: 23px !important;
-        margin-left: -29px !important;
+        margin: 0 !important;
+    }
+}
+
+/* ==========================================================
+   FOOTER — separa a área institucional da área branca de selos
+   ========================================================== */
+html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 205px !important;
+    padding: 25px 0 18px !important;
+    background: #fff !important;
+    color: #211267 !important;
+    box-sizing: border-box !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos .conteiner {
+    width: min(1112px, calc(100% - 32px)) !important;
+    max-width: 1112px !important;
+    margin: 0 auto !important;
+}
+
+html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos p,
+html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos span {
+    color: #211267 !important;
+}
+
+@media (max-width: 979px) {
+    html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos {
+        min-height: 0 !important;
+        padding: 24px 16px !important;
+    }
+
+    html body.s26-layout-2026 #rodape.s26-footer .pagamento-selos .conteiner {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 }
