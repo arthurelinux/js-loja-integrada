@@ -1,0 +1,316 @@
+/* SODRÉ — cards reais no desktop e no mobile.
+ * Importar depois de estilo.css, no lugar de sodre-mobile.css.
+ * Requer home-card.js da mesma revisão.
+ */
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed {
+    position: relative !important;
+    width: calc(100% - 32px) !important;
+    max-width: 390px !important;
+    height: auto !important;
+    margin: 34px auto !important;
+    padding: 0 !important;
+    background: none !important;
+    transform: none !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .container-cards {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .card-detran,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .card-empresas,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .card-concurso,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .card-carreira {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    float: none !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed :is(.s26-product__pill,.s26-product__body,.s26-product__name,.s26-product__price,.s26-product__prefix,.s26-product__amount,.s26-product__installment,.s26-product__installments,.s26-product__actions,.s26-product__buy,.s26-product__more,.s26-product__note),
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price strong,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price small,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price > span {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    text-indent: 0 !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__pill {
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: calc(100% - 40px) !important;
+    flex-shrink: 0 !important;
+    height: 51px !important;
+    margin: 0 auto -26px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(100deg,#352198,#95166d 52%,#ff003f) !important;
+    color: #fff !important;
+    font: 800 clamp(20px, 6vw, 25px)/1 Lexend,Arial,sans-serif !important;
+    white-space: normal !important;
+    text-align: center !important;
+    padding: 0 8px !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__body {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    flex: 1 0 auto !important;
+    min-height: 310px !important;
+    padding: 56px 20px 22px !important;
+    border-radius: 18px !important;
+    background: #f1f1f2 !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__name {
+    width: 100% !important;
+    min-height: 48px !important;
+    margin: 0 0 18px !important;
+    color: #4f4f5a !important;
+    font: 500 16px/1.25 Poppins,Arial,sans-serif !important;
+    text-align: center !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price {
+    display: grid !important;
+    grid-template-columns: max-content max-content !important;
+    grid-template-rows: 16px 40px !important;
+    gap: 0 5px !important;
+    align-items: end !important;
+    justify-content: center !important;
+    width: max-content !important;
+    margin: 0 auto !important;
+    color: #cc123d !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price > span {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    align-self: end !important;
+    justify-self: end !important;
+    color: #50505a !important;
+    font: 800 11px/16px Poppins,Arial,sans-serif !important;
+    white-space: nowrap !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price strong {
+    display: contents !important;
+    color: #cc123d !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price small {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    align-self: start !important;
+    justify-self: end !important;
+    margin: 4px 0 0 !important;
+    color: #cc123d !important;
+    font: 900 21px/1 Montserrat,Arial,sans-serif !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price .s26-product__amount {
+    display: block !important;
+    grid-column: 2 !important;
+    grid-row: 1 / 3 !important;
+    align-self: end !important;
+    color: #cc123d !important;
+    font: 900 clamp(36px, 11.5vw, 46px)/1 Montserrat,Arial,sans-serif !important;
+    letter-spacing: -1px !important;
+    white-space: nowrap !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__installment,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__installments {
+    width: 230px !important;
+    min-height: 34px !important;
+    margin: 8px auto 22px !important;
+    color: #62616a !important;
+    font: 400 13px/1.25 Poppins,Arial,sans-serif !important;
+    text-align: right !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-top: auto !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__buy {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 160px !important;
+    height: 42px !important;
+    padding: 0 12px !important;
+    border-radius: 999px !important;
+    background: #30208f !important;
+    color: #fff !important;
+    font: 800 14px/1 Lexend,Arial,sans-serif !important;
+    text-decoration: none !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__more,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-emp {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    height: 40px !important;
+    font: 700 13px/1 Lexend,Arial,sans-serif !important;
+    text-decoration: none !important;
+    color: #3a3448 !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__more::after {
+    content: none !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__note {
+    width: 100% !important;
+    margin: 10px auto 0 !important;
+    padding: 0 16px !important;
+    color: #77747e !important;
+    font: 400 12px/1.3 Poppins,Arial,sans-serif !important;
+    text-align: center !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product-arrow {
+    position: absolute !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #ff003f !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    color: #ff003f !important;
+    font: 700 24px/1 Arial,sans-serif !important;
+    cursor: pointer !important;
+    top: 170px !important;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    z-index: 3 !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product-arrow--prev {
+    left: -12px !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product-arrow--next {
+    right: -12px !important;
+}
+
+@media (min-width:980px) { .s26-card-nav { display: none !important; } }
+
+/* O desktop deixa de depender do recorte de index.jpg e de posições absolutas. */
+@media (min-width:980px) {
+    html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed {
+        width: calc(100% - 48px) !important;
+        max-width: 1114px !important;
+        margin: 0 auto 56px !important;
+    }
+    html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .container-cards {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 28px !important;
+        overflow: visible !important;
+        align-items: stretch !important;
+    }
+    html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__pill {
+        width: calc(100% - 40px) !important;
+        font-size: clamp(18px, 2vw, 25px) !important;
+    }
+    html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__price .s26-product__amount {
+        font-size: 46px !important;
+    }
+    html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product-arrow {
+        display: none !important;
+    }
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__amount * {
+    font: inherit !important;
+    color: inherit !important;
+    letter-spacing: inherit !important;
+    vertical-align: baseline !important;
+}
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed :is(.s26-product__buy,.s26-product__more,.s26-product-arrow):focus-visible {
+    outline: 3px solid #30208f !important;
+    outline-offset: 3px !important;
+}
+
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-emp span {
+    display: grid !important;
+    place-items: center !important;
+    flex: 0 0 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg,#352198,#ff003f) !important;
+    color: #fff !important;
+    font: 700 24px/1 Arial,sans-serif !important;
+}
+@media (min-width:980px) and (max-width:1199px) {
+    html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__actions {
+        min-height: 94px !important;
+        align-content: flex-start !important;
+    }
+}
+
+/* A personalização antiga usa esta camada para encobrir partes da imagem desktop. */
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__body::before,
+html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-product__body::after {
+    content: none !important;
+    display: none !important;
+}

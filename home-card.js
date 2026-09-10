@@ -733,12 +733,6 @@
         if (finished) return;
         finished = true;
         clearInterval(readyTimer);
-        document.documentElement.classList.remove('s26-page-loading');
-        const loader = document.getElementById('s26-page-loader');
-        if (loader) {
-            loader.classList.add('s26-loaded');
-            setTimeout(function() { loader.remove(); }, 400);
-        }
     }
 
     function checkReady() {
@@ -758,15 +752,6 @@
     }
 
     function start() {
-        const loader = document.createElement('div');
-        loader.id = 's26-page-loader';
-        loader.setAttribute('role', 'status');
-        loader.setAttribute('aria-live', 'polite');
-        loader.innerHTML = '<div class="s26-loader-spinner" aria-label="Carregando" role="img"></div>';
-        // Aparência mínima disponível mesmo antes do CSS externo chegar.
-        loader.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:white;color:#30208f;font:600 14px Arial,sans-serif';
-        document.body.appendChild(loader);
-        document.documentElement.classList.add('s26-page-loading');
         observer = new MutationObserver(function(records) {
             const relevant = records.some(function(record) {
                 const el = record.target.nodeType === 1 ? record.target : record.target.parentElement;
