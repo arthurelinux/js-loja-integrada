@@ -41,3 +41,13 @@ Não carregue simultaneamente versões antigas de `home-card.js`, `sodre-cards.c
 Não recarregar no painel `JS_Codex_Layout_2026.js` nem `JS_Razao_Social.js` para esta correção do footer. O primeiro excede o limite do painel e o segundo injeta regras mobile que sobrescrevem o rodapé.
 
 Teste em 320, 360, 390 e 430 pixels e depois no desktop. O código inline desta pasta tem menos de 15.000 caracteres; o CSS e o JavaScript do rodapé são externos.
+
+## 5. Layout 2026 sem tocar no footer
+
+Substitua o `JS_Codex_Layout_2026.js` por este carregamento externo:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/arthurelinux/js-loja-integrada@820fb15/pacote-final-loja-integrada/JS_Codex_Layout_2026_SEM_FOOTER.js"></script>
+```
+
+Esta versão não consulta, classifica ou altera `#rodape`. O arquivo tem 16.647 caracteres e deve ser externo.
