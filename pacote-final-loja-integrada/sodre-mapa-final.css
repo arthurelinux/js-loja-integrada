@@ -6,3 +6,5 @@ html body.s26-layout-2026.pagina-inicial .container-mapa.s26-map{width:min(1116p
 
 /* Apenas z-index das sugestoes do mapa */
 @media(max-width:767px){html body.s26-layout-2026.pagina-inicial .container-mapa.s26-map{position:relative!important;z-index:20!important}html body.s26-layout-2026.pagina-inicial .container-mapa.s26-map #div_inputs{position:relative!important;z-index:10000!important}html body.s26-layout-2026.pagina-inicial .container-mapa.s26-map #div_inputs a{position:relative!important;z-index:10001!important}html body.s26-layout-2026.pagina-inicial .container-mapa.s26-map select.select-bairro{position:relative!important;z-index:5!important}}
+
+@media(min-width:768px){html body.s26-layout-2026.pagina-inicial .container-mapa.s26-map .pesquisa-mapa{top:78px!important;transform:none!important}}
