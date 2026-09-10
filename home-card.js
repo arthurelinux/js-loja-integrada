@@ -494,7 +494,8 @@
         imp(section, 'width', '100%');
         imp(section, 'max-width', '100%');
         imp(section, 'margin', '34px auto 40px');
-        imp(section, 'padding', '0');
+        // A pill fica 26px sobreposta ao corpo; reservar espaço evita o corte no topo.
+        imp(section, 'padding', '30px 0 0');
         imp(section, 'overflow', 'hidden');
         imp(section, 'visibility', 'hidden');
         imp(section, 'opacity', '0');
@@ -515,7 +516,7 @@
         imp(container, 'width', '100%');
         imp(container, 'max-width', '100%');
         imp(container, 'margin', '0');
-        imp(container, 'padding', '0 calc((100vw - 310px)/2)');
+        imp(container, 'padding', '0 max(16px, calc((100vw - 310px)/2))');
         imp(container, 'box-sizing', 'border-box');
         imp(container, 'overflow-x', 'auto');
         imp(container, 'overflow-y', 'hidden');
