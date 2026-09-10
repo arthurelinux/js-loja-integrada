@@ -57,3 +57,13 @@ Para ativar a rotação automática e reduzir a altura do card de postagens no m
 ```html
 <script src="https://cdn.jsdelivr.net/gh/arthurelinux/js-loja-integrada@2c91f97/pacote-final-loja-integrada/sodre-blog-mobile.js"></script>
 ```
+
+## 6. Mesmo footer em todas as páginas
+
+Carregue este CSS depois do CSS global, na home e nas páginas internas:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/arthurelinux/js-loja-integrada@main/pacote-final-loja-integrada/sodre-footer-universal.css?v=1">
+```
+
+Não carregue `footer-sodre.js`, `sodre-about.css` ou `JS_Rodape_MIN.js` para o footer. Mantenha somente o script nativo do rodapé.
