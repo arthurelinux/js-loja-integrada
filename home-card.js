@@ -762,7 +762,7 @@
         loader.id = 's26-page-loader';
         loader.setAttribute('role', 'status');
         loader.setAttribute('aria-live', 'polite');
-        loader.innerHTML = '<div class="s26-loader-spinner" aria-hidden="true"></div><span>Carregando Sodré Laboratório…</span>';
+        loader.innerHTML = '<div class="s26-loader-spinner" aria-label="Carregando" role="img"></div>';
         // Aparência mínima disponível mesmo antes do CSS externo chegar.
         loader.style.cssText = 'position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:white;color:#30208f;font:600 14px Arial,sans-serif';
         document.body.appendChild(loader);
@@ -1046,6 +1046,36 @@
             imp(el, 'display', 'none');
         });
 
+        let more = card.querySelector('.s26-emp');
+        if (more) {
+            imp(more, 'display', 'inline-flex');
+            imp(more, 'align-items', 'center');
+            imp(more, 'justify-content', 'center');
+            imp(more, 'gap', '8px');
+            imp(more, 'height', '40px');
+            imp(more, 'color', '#d40846');
+            imp(more, 'font-family', 'Lexend,Arial,sans-serif');
+            imp(more, 'font-size', '13px');
+            imp(more, 'font-weight', '800');
+            imp(more, 'line-height', '1');
+            imp(more, 'text-decoration', 'none');
+            imp(more, 'white-space', 'nowrap');
+            let moreIcon = q('span', more);
+            if (moreIcon) {
+                imp(moreIcon, 'display', 'grid');
+                imp(moreIcon, 'place-items', 'center');
+                imp(moreIcon, 'width', '32px');
+                imp(moreIcon, 'height', '32px');
+                imp(moreIcon, 'border-radius', '50%');
+                imp(moreIcon, 'background', 'linear-gradient(135deg,#352198,#ff003f)');
+                imp(moreIcon, 'color', '#fff');
+                imp(moreIcon, 'font-family', 'Arial,sans-serif');
+                imp(moreIcon, 'font-size', '24px');
+                imp(moreIcon, 'font-weight', '700');
+                imp(moreIcon, 'line-height', '1');
+            }
+        }
+
         let note = card.querySelector('.s26-product__note');
         imp(note, 'position', 'static');
         imp(note, 'margin', '9px 0 0');
@@ -1089,6 +1119,8 @@
         });
 
         imp(container, 'display', 'flex');
+        imp(container, 'flex-direction', 'row');
+        imp(container, 'flex-wrap', 'nowrap');
         imp(container, 'grid-template-columns', 'none');
         imp(container, 'align-items', 'stretch');
         imp(container, 'justify-content', 'flex-start');
