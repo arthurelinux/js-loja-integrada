@@ -51,3 +51,9 @@ Substitua o `JS_Codex_Layout_2026.js` por este carregamento externo:
 ```
 
 Esta versão não consulta, classifica ou altera `#rodape`. O arquivo tem 16.647 caracteres e deve ser externo.
+
+Para ativar a rotação automática e reduzir a altura do card de postagens no mobile, carregue depois dele:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/arthurelinux/js-loja-integrada@2c91f97/pacote-final-loja-integrada/sodre-blog-mobile.js"></script>
+```
