@@ -841,10 +841,10 @@
     function styleCard(card) {
 
         imp(card, 'position', 'relative');
-        imp(card, 'flex', '0 0 310px');
-        imp(card, 'width', '310px');
-        imp(card, 'max-width', '310px');
-        imp(card, 'min-width', '310px');
+        imp(card, 'flex', '0 0 100%');
+        imp(card, 'width', '100%');
+        imp(card, 'max-width', '100%');
+        imp(card, 'min-width', '100%');
         imp(card, 'margin', '0');
         imp(card, 'padding', '0');
         imp(card, 'border', '0');
@@ -1113,7 +1113,7 @@
         imp(container, 'width', '100%');
         imp(container, 'max-width', '100%');
         imp(container, 'margin', '0');
-        imp(container, 'padding', '0 max(16px, calc((100vw - 310px)/2))');
+        imp(container, 'padding', '0');
         imp(container, 'box-sizing', 'border-box');
         imp(container, 'overflow-x', 'auto');
         imp(container, 'overflow-y', 'hidden');
