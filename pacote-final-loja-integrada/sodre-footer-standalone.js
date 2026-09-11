@@ -4,6 +4,7 @@
 
   var ROOT_ID = 'sodre-footer-root';
   var MOBILE_QUERY = '(max-width: 767px)';
+  var CANONICAL_SRC = 'https://cdn.awsli.com.br/2648/2648975/arquivos/sodretox-footer-2026-20260721-final.js?v=20260721f';
   var links = {
     'Minha Conta': [
       ['Fale Conosco', '/pagina/fale-conosco.html'],
@@ -61,7 +62,7 @@
       } else {
         root = document.createElement('footer');
         root.id = ROOT_ID;
-        root.className = 'sodre-mobile-footer';
+        root.className = 'sodre-mobile-footer s26-footer s26f';
         root.setAttribute('aria-label', 'Rodapé');
         root.innerHTML = nativeContent || markup();
         document.body.appendChild(root);
@@ -70,7 +71,7 @@
     if (!root) {
       root = document.createElement('footer');
       root.id = ROOT_ID;
-      root.className = 'sodre-mobile-footer';
+      root.className = 'sodre-mobile-footer s26-footer s26f';
       root.setAttribute('aria-label', 'Rodapé');
       root.innerHTML = markup();
       document.body.appendChild(root);
@@ -78,7 +79,15 @@
   }
 
   function start() {
-    render();
+    var canonical = document.createElement('script');
+    canonical.src = CANONICAL_SRC;
+    canonical.onload = function () {
+      render();
+      setTimeout(render, 300);
+      setTimeout(render, 1000);
+    };
+    document.head.appendChild(canonical);
+    setTimeout(render, 500);
     new MutationObserver(render).observe(document.body, { childList: true, subtree: true });
     window.addEventListener('resize', render);
   }
