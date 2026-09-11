@@ -55,7 +55,10 @@
     if (native) {
       var nativeContent = native.innerHTML;
       native.remove();
-      if (!root) {
+      if (root) {
+        /* O footer nativo pode chegar depois do DOMContentLoaded. */
+        if (nativeContent) root.innerHTML = nativeContent;
+      } else {
         root = document.createElement('footer');
         root.id = ROOT_ID;
         root.className = 'sodre-mobile-footer';
