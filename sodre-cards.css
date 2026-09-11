@@ -314,3 +314,20 @@ html body.s26-layout-2026 .cards-sodre.s26-products.s26-products-fixed .s26-prod
     content: none !important;
     display: none !important;
 }
+
+/* Títulos superiores: tipografia fixa e sem alteração pelo tema. */
+html body.pagina-inicial .cards-sodre.s26-products .s26-product__pill {
+    font-family: "Lexend", Arial, sans-serif !important;
+    font-size: 25px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+html body.pagina-inicial .cards-sodre.s26-products .card-concurso .s26-product__pill {
+    font-size: 23px !important;
+    line-height: .95 !important;
+    white-space: normal !important;
+}
