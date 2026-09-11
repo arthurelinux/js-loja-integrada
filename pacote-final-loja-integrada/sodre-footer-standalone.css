@@ -1,0 +1,36 @@
+/* Footer independente Sodré. Carregar depois do CSS global. */
+#sodre-footer-root,
+#sodre-footer-root * { box-sizing: border-box; }
+
+#sodre-footer-root { color: #fff; background: #18204d; font-family: inherit; }
+#sodre-footer-root .sodre-footer-inner { width: min(1112px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0; }
+#sodre-footer-root .sodre-footer-grid { display: grid; grid-template-columns: 1fr 1.25fr 1.25fr 1fr; gap: 28px; }
+#sodre-footer-root h2 { margin: 0 0 16px; font-size: 18px; }
+#sodre-footer-root ul { padding: 0; margin: 0; list-style: none; }
+#sodre-footer-root li { margin: 0 0 8px; }
+#sodre-footer-root a { color: inherit; overflow-wrap: anywhere; text-decoration: none; }
+#sodre-footer-root a:hover { text-decoration: underline; }
+#sodre-footer-root .sodre-contact { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+#sodre-footer-root .sodre-social { display: flex; gap: 12px; margin: 4px 0 20px; }
+#sodre-footer-root .sodre-social a { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid currentColor; border-radius: 50%; font-weight: 700; }
+#sodre-footer-root .sodre-cert { margin-top: 28px; }
+#sodre-footer-root .sodre-cert-list { display: flex; flex-wrap: wrap; gap: 10px; }
+#sodre-footer-root .sodre-cert-list span { display: grid; place-items: center; width: 145px; height: 90px; border-radius: 12px; background: #fff; color: #18204d; font-weight: 700; text-align: center; }
+#sodre-footer-root .sodre-pay { background: #11183c; }
+#sodre-footer-root .sodre-pay-inner { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 24px 0; }
+#sodre-footer-root .sodre-pay-list { display: flex; flex-wrap: wrap; gap: 8px; }
+#sodre-footer-root .sodre-pay-list span { padding: 10px 12px; background: #fff; color: #18204d; font-size: 11px; font-weight: 700; }
+#sodre-footer-root .sodre-brand { text-align: right; }
+#sodre-footer-root .sodre-brand strong { font-size: 28px; }
+#sodre-footer-root .sodre-brand p { margin: 4px 0 0; font-size: 11px; }
+
+@media (max-width: 767px) {
+  #sodre-footer-root .sodre-footer-inner { padding: 26px 0; }
+  #sodre-footer-root .sodre-footer-grid { grid-template-columns: 1fr 1fr; gap: 26px 18px; }
+  #sodre-footer-root .sodre-contact { grid-column: 1 / -1; order: -1; }
+  #sodre-footer-root .sodre-cert-list { flex-wrap: nowrap; }
+  #sodre-footer-root .sodre-cert-list span { width: calc(50vw - 30px); height: 88px; }
+  #sodre-footer-root .sodre-pay-inner { display: block; }
+  #sodre-footer-root .sodre-pay-list { justify-content: center; }
+  #sodre-footer-root .sodre-brand { margin-top: 24px; text-align: center; }
+}

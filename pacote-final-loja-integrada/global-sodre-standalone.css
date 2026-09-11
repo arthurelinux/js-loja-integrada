@@ -1,0 +1,68 @@
+/*
+ * GLOBAL COMPLETO — SODRÉ / FOOTER INDEPENDENTE
+ *
+ * Carregar este arquivo no campo global de CSS da Loja Integrada.
+ * O CSS principal continua separado para evitar colar mais de 300 KB no painel.
+ * O standalone.js oculta o footer nativo e cria #sodre-footer-root.
+ */
+
+@import url("https://cdn.jsdelivr.net/gh/arthurelinux/js-loja-integrada@main/pacote-final-loja-integrada/global-sodre-unificado.css?v=standalone-1");
+@import url("https://cdn.jsdelivr.net/gh/arthurelinux/js-loja-integrada@main/pacote-final-loja-integrada/sodre-footer-standalone.css?v=standalone-1");
+
+/* Reset mínimo para impedir estilos globais da plataforma de interferirem. */
+html body #sodre-footer-root {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    clear: both !important;
+    overflow: visible !important;
+    background: #18204d !important;
+    border: 0 !important;
+    float: none !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+html body #sodre-footer-root h2,
+html body #sodre-footer-root p,
+html body #sodre-footer-root ul,
+html body #sodre-footer-root li {
+    line-height: 1.4 !important;
+}
+
+html body #sodre-footer-root ul,
+html body #sodre-footer-root li {
+    width: auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+/* A versão independente substitui visualmente qualquer footer nativo. */
+html body #rodape.sodre-native-hidden,
+html body #rodape[aria-hidden="true"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+@media (max-width: 767px) {
+    html body #sodre-footer-root .sodre-footer-inner {
+        width: calc(100% - 32px) !important;
+        max-width: 100% !important;
+    }
+
+    html body #sodre-footer-root .sodre-footer-grid {
+        width: 100% !important;
+        min-height: 0 !important;
+    }
+}
