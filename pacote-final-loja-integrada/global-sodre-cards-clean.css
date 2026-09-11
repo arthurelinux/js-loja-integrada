@@ -1,0 +1,56 @@
+/* Global Sodré limpo: layout geral + uma única camada mobile para cards. */
+@import url("https://cdn.jsdelivr.net/gh/arthurelinux/js-loja-integrada@main/pacote-final-loja-integrada/global-sodre-unificado.css?v=cards-clean-1");
+
+/* Não alterar o footer neste arquivo. */
+@media (max-width: 767px) {
+  html body.s26-layout-2026 .cards-sodre.s26-products {
+    width: calc(100vw - 32px) !important;
+    max-width: 360px !important;
+    margin: 36px auto 42px !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body.s26-layout-2026
+  .cards-sodre.s26-products
+  .container-cards {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  html body.s26-layout-2026
+  .cards-sodre.s26-products
+  .container-cards > .card-detran,
+  html body.s26-layout-2026
+  .cards-sodre.s26-products
+  .container-cards > .card-empresas,
+  html body.s26-layout-2026
+  .cards-sodre.s26-products
+  .container-cards > .card-carreira,
+  html body.s26-layout-2026
+  .cards-sodre.s26-products
+  .container-cards > .card-concurso {
+    display: flex !important;
+    flex: 0 0 100% !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    float: none !important;
+    overflow: visible !important;
+  }
+
+  html body.s26-layout-2026
+  .cards-sodre.s26-products
+  .container-cards > *:not(.card-detran):not(.card-empresas):not(.card-carreira):not(.card-concurso) {
+    display: none !important;
+  }
+}
