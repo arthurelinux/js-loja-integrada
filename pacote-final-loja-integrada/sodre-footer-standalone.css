@@ -25,12 +25,12 @@
 #sodre-footer-root .sodre-brand p { margin: 4px 0 0; font-size: 11px; }
 
 /* Conteúdo clonado: preserva imagens, selos e logo do footer nativo. */
-#rodape.sodre-mobile-footer img { max-width: 100%; height: auto; }
-#rodape.sodre-mobile-footer .s26-footer__cert img,
-#rodape.sodre-mobile-footer .certificacoes img,
-#rodape.sodre-mobile-footer .s26-payments img,
-#rodape.sodre-mobile-footer .pagamento-selos img { display: block; object-fit: contain; }
-#rodape.sodre-mobile-footer .logo-rodape { display: block; max-width: 180px; height: auto; }
+#sodre-footer-root img { max-width: 100%; height: auto; }
+#sodre-footer-root .s26-footer__cert img,
+#sodre-footer-root .certificacoes img,
+#sodre-footer-root .s26-payments img,
+#sodre-footer-root .pagamento-selos img { display: block; object-fit: contain; }
+#sodre-footer-root .logo-rodape { display: block; max-width: 180px; height: auto; }
 
 @media (max-width: 767px) {
   #sodre-footer-root .sodre-footer-inner { padding: 26px 0; }

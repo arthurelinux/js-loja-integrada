@@ -129,7 +129,7 @@ Confira:
 
 ## Alternativa experimental: footer independente
 
-Se o footer nativo continuar variando entre páginas, teste a versão independente do pacote. Ela não usa Vue: no mobile, clona o conteúdo do `#rodape` nativo — preservando imagens, logo e selos reais — cria um novo elemento independente e monitora recriações do DOM pela Loja Integrada. No desktop, preserva o footer nativo.
+Se o footer nativo continuar variando entre páginas, teste a versão independente do pacote. Ela não usa Vue: no mobile, clona o conteúdo do `#rodape` nativo — preservando os mesmos itens, imagens, logo e selos reais — e cria um novo elemento `#sodre-footer-root`. No desktop, preserva o footer nativo.
 
 Carregue o CSS e, por último, o JavaScript em todas as páginas:
 

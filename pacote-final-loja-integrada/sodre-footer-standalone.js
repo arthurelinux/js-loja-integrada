@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var ROOT_ID = 'rodape';
+  var ROOT_ID = 'sodre-footer-root';
   var MOBILE_QUERY = '(max-width: 767px)';
   var links = {
     'Minha Conta': [
@@ -45,7 +45,8 @@
   }
 
   function render() {
-    var native = document.querySelector('#rodape:not(.sodre-mobile-footer)');
+    var native = document.getElementById('rodape');
+    if (native && native.id === ROOT_ID) native = null;
     var root = document.getElementById(ROOT_ID);
     if (!window.matchMedia(MOBILE_QUERY).matches) {
       if (root) root.remove();
