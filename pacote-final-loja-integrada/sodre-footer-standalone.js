@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var ROOT_ID = 'sodre-footer-root';
+  var ROOT_ID = 'rodape';
   var MOBILE_QUERY = '(max-width: 767px)';
   var links = {
     'Minha Conta': [
@@ -45,16 +45,28 @@
   }
 
   function render() {
-    var native = document.getElementById('rodape');
+    var native = document.querySelector('#rodape:not(.sodre-mobile-footer)');
     var root = document.getElementById(ROOT_ID);
     if (!window.matchMedia(MOBILE_QUERY).matches) {
       if (root) root.remove();
       return;
     }
-    if (native) native.remove();
+    if (native) {
+      var nativeContent = native.innerHTML;
+      native.remove();
+      if (!root) {
+        root = document.createElement('footer');
+        root.id = ROOT_ID;
+        root.className = 'sodre-mobile-footer';
+        root.setAttribute('aria-label', 'Rodapé');
+        root.innerHTML = nativeContent || markup();
+        document.body.appendChild(root);
+      }
+    }
     if (!root) {
       root = document.createElement('footer');
       root.id = ROOT_ID;
+      root.className = 'sodre-mobile-footer';
       root.setAttribute('aria-label', 'Rodapé');
       root.innerHTML = markup();
       document.body.appendChild(root);
